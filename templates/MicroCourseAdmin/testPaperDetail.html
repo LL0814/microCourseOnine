@@ -1,0 +1,186 @@
+<title>试卷详细</title>
+{%extends 'MicroCourseAdmin/adminNav.html' %}
+{% block content %}
+<section id='content'>
+    <div class='container-fluid'>
+        <div class='row-fluid' id='content-wrapper'>
+            <div class='span12' id="test-container">
+                <div class='row-fluid'>
+                    <div class='span12'>
+                        <div class='page-header'>
+                            <h1 class='pull-left'>
+                                <i class='icon-table'></i>
+                                <span>试卷详细</span>
+                            </h1>
+                            <div class='pull-right'>
+                                <ul class='breadcrumb'>
+                                    <li>
+                                        <a><i class='icon-bar-chart'></i>
+                                        </a>
+                                    </li>
+                                    <li class='separator'>
+                                        <i class='icon-angle-right'></i>
+                                    </li>
+                                    <li class='active'>试卷详细</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span12 box'>
+                        <div class='box-content'>
+                            <div id='errorTips' class='alert alert-danger hidden'>
+                                <p><strong></strong></p>
+                            </div>
+                            <button class="btn btn-warning" name="button" style="margin-bottom:5px" type="button">历史记录</button>
+                            <button id="submit-test" class="btn btn-success" name="button" style="margin-bottom:5px" type="button">发布考试</button>
+                        </div>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span12 box bordered-box orange-border' style='margin-bottom:0;'>
+                        <div class='box-content box-no-padding'>
+                            <p class="lead paper-header-center test-date-grade"></p>
+                            <h1 class="paper-header-center test-course-name"></h1>
+                            <div class="paper-header-center test-score-time"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src='/static/assets/javascripts/jquery/jquery.min.js' type='text/javascript'></script>
+<script>
+    $(function() {
+        let test = {{ test | safe }};
+        let tasks = test.tasks;
+        let title = test.title;
+        $('.test-date-grade').text(title[0]);
+        $('.test-course-name').text(title[1]);
+        $('.test-score-time').text(title[2]);
+        tasks.map((task, index, tasks) => {
+            let name = task.name;
+            let alternativeAnswers = task.alternativeAnswers;
+            let standardAnswers = task.standardAnswers;
+            let id = task.id;
+            let type = task.type;
+            let taskContent;
+            index = index + 1;
+            if(type == 1) {
+                var content = "";
+                alternativeAnswers = alternativeAnswers.split('&&&');
+                alternativeAnswers.map( (answer, index, array) => {
+                    var temple;
+                    console.log(answer, index, array);
+                    if(index == standardAnswers) {
+                        temple = "<ul><input type='radio' name='"+id+"answer' checked><label>" + answer + "</label><br/></ul>";
+                    }
+                    else {
+                        temple = "<ul><input type='radio' name='"+id+"answer'><label>" + answer + "</label><br/></ul>";
+                    }
+                    content += temple;
+                });
+                
+                taskContent = "<div class='row-fluid' id='"+ id +"'>\
+                    <div class='span12 box test-tasks'>\
+                        <div class='box-content'>\
+                            <div class='accordion accordion-blue' style='margin-bottom:0;'>\
+                                <div class='accordion-group'>\
+                                    <div class='accordion-heading'>\
+                                        <span class='accordion-toggle'>"+ index + '. ' + name +"</span>\
+                                    </div>\
+                                    <div class='accordion-body'>\
+                                        <div class='accordion-inner answer'>"+ content +"</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>";
+            }
+            else if(type == 2) {
+                var content = "";
+                alternativeAnswers = alternativeAnswers.split('&&&');
+                standardAnswers = standardAnswers.split('&&&');
+                alternativeAnswers.map( (answer, index, array) => {
+                    var temple;
+                    console.log(answer, index, array);
+                    if(standardAnswers.indexOf(''+index) != -1) {
+                        temple = "<ul><input type='checkbox' name='"+id+"answer' checked><label>" + answer + "</label><br/></ul>";
+                    }
+                    else {
+                        temple = "<ul><input type='checkbox' name='"+id+"answer'><label>" + answer + "</label><br/></ul>";
+                    }
+                    content += temple;
+                });
+                
+                taskContent = "<div class='row-fluid' id='"+ id +"'>\
+                    <div class='span12 box test-tasks'>\
+                        <div class='box-content'>\
+                            <div class='accordion accordion-red' style='margin-bottom:0;'>\
+                                <div class='accordion-group'>\
+                                    <div class='accordion-heading'>\
+                                        <span class='accordion-toggle'>" + index + '. ' + name +"</span>\
+                                    </div>\
+                                    <div class='accordion-body'>\
+                                        <div class='accordion-inner answer'>"+ content +"</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>";
+            }
+            else if(type == 3) {
+                console.log(id , name, alternativeAnswers, standardAnswers);
+                var content = "";
+                if(standardAnswers == 0) {
+                    content = "<ul><input type='radio' name='"+ id +"answer' value='0' checked> <label>错误</label><br/><input type='radio' name='answer' value='1'> <label>正确</label><br/></ul>";
+                }
+                else {
+                    content = "<ul><input type='radio' name='"+ id +"answer' value='0'> <label>错误</label><br/><input type='radio' name='answer' value='1' checked> <label>正确</label><br/></ul>"
+                }
+                
+                taskContent = "<div class='row-fluid' id='"+ id +"'>\
+                    <div class='span12 box test-tasks'>\
+                        <div class='box-content'>\
+                            <div class='accordion accordion-green' style='margin-bottom:0;'>\
+                                <div class='accordion-group'>\
+                                    <div class='accordion-heading'>\
+                                        <span class='accordion-toggle'>"+ index + '. ' + name +"</span>\
+                                    </div>\
+                                    <div class='accordion-body'>\
+                                        <div class='accordion-inner answer'>"+ content +"</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>";
+            }
+            else {
+                var content = "<input class='input-block-level' value='"+ standardAnswers +"' />";
+                taskContent = "<div class='row-fluid' id='"+ id +"'>\
+                    <div class='span12 box test-tasks'>\
+                        <div class='box-content'>\
+                            <div class='accordion accordion-purple' style='margin-bottom:0;'>\
+                                <div class='accordion-group'>\
+                                    <div class='accordion-heading'>\
+                                        <span class='accordion-toggle'>"+ index + '. ' + name +"</span>\
+                                    </div>\
+                                    <div class='accordion-body'>\
+                                        <div class='accordion-inner answer'>"+ content +"</div>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>\
+                </div>";
+            }
+            $('#test-container').append(taskContent);
+        })
+    });
+</script>
+{% endblock %}

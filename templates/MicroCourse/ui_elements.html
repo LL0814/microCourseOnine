@@ -1,0 +1,234 @@
+<title>课程资源中心</title>
+<link href="https://vjs.zencdn.net/7.2.4/video-js.css" rel="stylesheet">
+<!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+<script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
+{%extends 'MicroCourse/studentContainer.html' %}
+{% block content %}
+<section id='content'>
+    <div class='container-fluid'>
+        <div class='row-fluid' id='content-wrapper'>
+            <div class='span12'>
+                <div class='row-fluid'>
+                    <div class='span12'>
+                        <div class='page-header'>
+                            <h1 class='pull-left'>
+                                <i class='icon-tint'></i>
+                                <span>课程资源</span>
+                            </h1>
+                            <div class='pull-right'>
+                                <ul class='breadcrumb'>
+                                    <li>
+                                        <a><i class='icon-bar-chart'></i>
+                                        </a>
+                                    </li>
+                                    <li class='separator'>
+                                        <i class='icon-angle-right'></i>
+                                    </li>
+                                    <li>
+                                        课程管理
+                                    </li>
+                                    <li class='separator'>
+                                        <i class='icon-angle-right'></i>
+                                    </li>
+                                    <li class='active'>已选课程</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class='alert alert-info'>
+                            <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                            当前为
+                            <strong>二年级 - 3班</strong>
+                            - 祝您学习愉快
+                        </div>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span12 box' style='margin-bottom: 0'>
+                        <div class='box-header orange-background'>
+                            <div class='title'>NodeJs 项目初体验</div>
+                            <div class='actions'>
+                                <a href="#" class="btn box-remove btn-mini btn-link"><i class='icon-remove'></i>
+                                </a>
+                                <a href="#" class="btn box-collapse btn-mini btn-link"><i></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class='box-content'>
+                            <div class='tabbable' style='margin-top: 20px'>
+                                <ul class='nav nav-responsive nav-tabs'>
+                                    <li class='active'>
+                                        <a data-toggle='tab' href='#retab1'>
+                                            微程介绍
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab2'>
+                                            视频
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab3'>
+                                            课后习题
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab8'>
+                                            课件
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class='tab-content'>
+                                    <div class="tab-pane active" id="retab1">
+                                        <p>简单的说 Node.js 就是运行在服务端的 JavaScript。</p>
+                                        <p>Node.js 是一个基于Chrome JavaScript 运行时建立的一个平台。</p>
+                                        <p>Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。</p>
+                                    </div>
+                                    <div class="tab-pane " id="retab2">
+                                        <video controls="controls" style="width: 100%;">
+                                            <source src="/static/video/videos/20180506150834.mp4" />
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab3">
+                                        <a  href='/static/ppt/test.pdf'>课件在线阅读 
+                                    </a>
+                                    </div>
+                                    <div class="tab-pane " id="retab4">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab5">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab6">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab7">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab8">
+                                        <canvas id="the-canvas" style="width:100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class='hr-double' />
+                <div class='row-fluid'>
+                    <div class='span12 box' style='margin-bottom: 0'>
+                        <div class='box-header orange-background'>
+                            <div class='title'>Django 进阶</div>
+                            <div class='actions'>
+                                <a href="#" class="btn box-remove btn-mini btn-link"><i class='icon-remove'></i>
+                                </a>
+                                <a href="#" class="btn box-collapse btn-mini btn-link"><i></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class='box-content'>
+                            <div class='tabbable' style='margin-top: 20px'>
+                                <ul class='nav nav-responsive nav-tabs'>
+                                    <li class='active'>
+                                        <a data-toggle='tab' href='#retab9'>
+                                            课程介绍
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab10'>
+                                            第一讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab11'>
+                                            第二讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab12'>
+                                            第三讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab13'>
+                                            第四讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab14'>
+                                            第五讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab15'>
+                                            第六讲
+                                        </a>
+                                    </li>
+                                    <li class=''>
+                                        <a data-toggle='tab' href='#retab16'>
+                                            课件
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class='tab-content'>
+                                    <div class="tab-pane active" id="retab9">
+                                        <p>简单的说 Node.js 就是运行在服务端的 JavaScript。</p>
+                                        <p>Node.js 是一个基于Chrome JavaScript 运行时建立的一个平台。</p>
+                                        <p>Node.js是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。</p>
+                                    </div>
+                                    <div class="tab-pane " id="retab10">
+                                        <div class='alert alert-success'>
+                                            <p><strong>章节简介</strong></p>
+                                            该方法将通知 Web 浏览器不要执行与事件关联的默认动作（如果存在这样的动作）。例如，如果 type 属性是 "submit"，在事件传播的任意阶段可以调用任意的事件句柄，通过调用该方法，可以阻止提交表单。注意，如果 Event 对象的 cancelable 属性是 fasle，那么就没有默认动作，或者不能阻止默认动作。无论哪种情况，调用该方法都没有作用。
+                                        </div>
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab11">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab12">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab13">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab14">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab15">
+                                        <video src="/static/video/videos/20180506150834.mp4" controls="controls" style="width: 100%;">
+                                            your browser does not support the video tag
+                                        </video>
+                                    </div>
+                                    <div class="tab-pane " id="retab16">
+                                        <canvas id="the-canvas" style="width:100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class='hr-double' />
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://vjs.zencdn.net/7.2.4/video.js"></script>
+{% endblock %}

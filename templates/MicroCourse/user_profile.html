@@ -1,0 +1,215 @@
+<title>个人中心</title>
+{%extends 'MicroCourse/studentContainer.html' %}
+{% block content %}
+<section id='content'>
+    <div class='container-fluid'>
+        <div class='row-fluid' id='content-wrapper'>
+            <div class='span12'>
+                <div class='page-header'>
+                    <h1 class='pull-left'>
+                        <i class='icon-user'></i>
+                        <span>个人中心</span>
+                    </h1>
+                    <div class='pull-right'>
+                        <ul class='breadcrumb'>
+                            <li>
+                                <a><i class='icon-bar-chart'></i>
+                                </a>
+                            </li>
+                            <li class='separator'>
+                                <i class='icon-angle-right'></i>
+                            </li>
+                            <li class='active'>个人中心</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span3'>
+                        <div class='box-content' style="text-align:center;">
+                            <img alt="230x230&amp;text=photo" src={{ userprofile.headImage }} />
+                            <span class='btn btn-success fileinput-button'>
+                                <i class='icon-plus icon-white'></i>
+                                <span>修改头像</span>
+                                <input id="uploadHeadImg" data-bfi-disabled='' multiple='' name='files[]' type='file' />
+                            </span>
+                        </div>
+                    </div>
+                    <div class='span9 box'>
+                        <div class='box-content box-double-padding'>
+                            <form class='form' style='margin-bottom: 0;' />
+                            <fieldset>
+                                <div class='span4'>
+                                    <div class='lead'>
+                                        <i class='icon-signin text-contrast'></i>
+                                        登录信息
+                                    </div>
+                                    <small class='muted'>
+
+                                    </small>
+                                </div>
+                                <div class='span7 offset1'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <label class='checkbox'>
+                                                <input data-target='#change-password' data-toggle='collapse' id='changepasswordcheck'
+                                                    type='checkbox' value='option1' />
+                                                修改密码?
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class='collapse' id='change-password'>
+                                        <div class='control-group'>
+                                            <label class='control-label'>密码</label>
+                                            <div class='controls'>
+                                                <input class='span12' id='password' placeholder='修改密码' type='password' />
+                                            </div>
+                                        </div>
+                                        <div class='control-group'>
+                                            <label class='control-label'>确认密码</label>
+                                            <div class='controls'>
+                                                <input class='span12' id='password-confirmation' placeholder='确认密码'
+                                                    type='password' />
+                                            </div>
+                                        </div>
+                                        <button id="update-password" class="btn btn-success" name="button" style="margin-bottom:5px" type="button">修改密码</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr class='hr-normal' />
+                            <fieldset>
+                                <div class='span4 box'>
+                                    <div class='lead'>
+                                        <i class='icon-user text-contrast'></i>
+                                        个人信息
+                                    </div>
+                                    <small class='muted'>
+                                    </small>
+                                </div>
+                                <div class='span7 offset1'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <input class='span12' id='NickName' value="{{ userprofile.nickname }}" placeholder='{{ userprofile.nickname }}' type='text' />
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr class='hr-normal' />
+                            <fieldset>
+                                <div class='span4 box'>
+                                    <div class='lead'>
+                                        <i class='icon-user text-contrast'></i>
+                                        教师信息
+                                    </div>
+                                    <small class='muted'>
+                                    </small>
+                                </div>
+                                <div class='span7 offset1'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <select class="span12">
+                                                <option value="0">-- 请选择教师 --</option>
+                                                {% for teacher in teachers %}
+                                                    {% if userprofile.teacher == teacher.id %}
+                                                        <option value="{{ teacher.id }}" selected>{{ teacher.name }}</option>
+                                                    {% else %}
+                                                        <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr class='hr-normal' />
+                            <fieldset>
+                                <div class='span4 box'>
+                                    <div class='lead'>
+                                        <i class='icon-user text-contrast'></i>
+                                        年级信息
+                                    </div>
+                                    <small class='muted'>
+                                    </small>
+                                </div>
+                                <div class='span7 offset1'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <select class="span12" id="select-grade">
+                                                <option value="0">-- 请选择年级 --</option>
+                                                {% for grade in grades %}
+                                                    {% if userprofile.grade == grade.id %}
+                                                        <option value="{{ grade.id }}" selected>{{ grade.name }}</option>
+                                                    {% else %}
+                                                        <option value="{{ grade.id }}">{{ grade.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr class='hr-normal' />
+                            <fieldset>
+                                <div class='span4 box'>
+                                    <div class='lead'>
+                                        <i class='icon-user text-contrast'></i>
+                                        班级信息
+                                    </div>
+                                    <small class='muted'>
+                                    </small>
+                                </div>
+                                <div class='span7 offset1'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <select class="span12" id="select-class">
+                                                <option value="0">-- 请选择班级 --</option>
+                                                {% for class in classes %}
+                                                    {% if userprofile.class1 == class.id %}
+                                                        <option value="{{ class.id }}" selected>{{ class.name }}</option>
+                                                    {% else %}
+                                                        <option value="{{ class.id }}">{{ class.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <hr class='hr-normal' />
+                            <div class='form-actions' style='margin-bottom: 0;'>
+                                <div class='text-right'>
+                                    <div class='btn btn-primary btn-large'>
+                                        <i class='icon-save'></i>
+                                        保存
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src='/static/assets/javascripts/jquery/jquery.min.js' type='text/javascript'></script>
+<script src='/static/assets/javascripts/jquery/jquery.cookie.js' type='text/javascript'></script>
+<script src='/static/assets/javascripts/profile.js' type='text/javascript'></script>
+<script>
+        $('#select-grade').on('change', function() {
+            $('#select-class').empty();
+            let grade2class = {{ grade2class | safe }};
+            let gradeid2name = {{ gradeid2name | safe }};
+            let gradeid = $(this).val();
+            let gradename = gradeid2name[gradeid]
+            let classes = grade2class[gradename];
+            let defaultOption = "<option value='0'>-- 请选择班级 --</option>";
+            let options = defaultOption;
+            if(classes) {
+                classes.map((cls) => {
+                    options += "<option value='" + cls.id + "'>" + cls.name + "</option>";
+                })
+            }
+            $('#select-class').append(options);
+        })
+</script>
+{% endblock %}
