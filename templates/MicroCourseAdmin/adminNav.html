@@ -111,227 +111,366 @@
                             <span>导航栏</span>
                         </a>
                     </li>
-                    <!--年级与班级管理 管理员-->
-                    {% if userprofile.type_id == 1 %}
-                    <li>
-                        <a class='dropdown-collapse' href='#'>
-                            <i class='icon-folder-open-alt'></i>
-                            <span>年级与班级管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li>
+                    <!--学生[start]-->
+                    {% if userprofile.type_id == 3 %}
+                        <li>
                                 <a class='dropdown-collapse' href='#'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>年级信息</span>
+                                    <i class='icon-edit'></i>
+                                    <span>微课管理</span>
                                     <i class='icon-angle-down angle-down'></i>
                                 </a>
                                 <ul class='nav nav-stacked'>
-                                    <li>
-                                        <a href='/grades/'>
+                                    <li class=''>
+                                        <a href='/resources/'>
                                             <i class='icon-caret-right'></i>
-                                            <span>年级管理</span>
+                                            <span>已选课程</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href='/gradeManage/'>
+                                    <li class=''>
+                                        <a href='form_components.html'>
                                             <i class='icon-caret-right'></i>
-                                            <span>添加年级</span>
+                                            <span>添加课程</span>
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                            <li>
-                                <a class='dropdown-collapse' href='#'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>班级信息</span>
+                        </li>
+                        <li>
+                                <a class='dropdown-collapse ' href='#'>
+                                    <i class='icon-tint'></i>
+                                    <span>考试</span>
                                     <i class='icon-angle-down angle-down'></i>
                                 </a>
                                 <ul class='nav nav-stacked'>
-                                    <li>
-                                        <a href='/classes/'>
+                                    <li class=''>
+                                        <a href='ui_elements.html'>
                                             <i class='icon-caret-right'></i>
-                                            <span>班级管理</span>
+                                            <span>参加考试</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href='/classManage/'>
+                                    <li class=''>
+                                        <a href='widgets.html'>
                                             <i class='icon-caret-right'></i>
-                                            <span>添加班级</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <!--教师管理 管理员-->
-                    {% if userprofile.type_id == 1 %}
-                    <li>
-                        <a class='dropdown-collapse ' href='#'>
-                            <i class='icon-tint'></i>
-                            <span>教师管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li class=''>
-                                <a href='/teachers/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>教师管理</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/teacherManage/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>添加教师</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <!--学生管理 管理员/教师-->
-                    <li>
-                        <a class='dropdown-collapse ' href='#'>
-                            <i class='icon-tint'></i>
-                            <span>学生管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li class=''>
-                                <a href='/myStudents/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>学生信息</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/myStudentManage/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>添加学生</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!--课程管理 管理员-->
-                    {% if userprofile.type_id == 1 %}
-                    <li class=''>
-                        <a class='dropdown-collapse' href='#'>
-                            <i class='icon-edit'></i>
-                            <span>课程管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li class=''>
-                                <a href='/courses/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>管理课程</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/courseManage/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>添加课程</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <!--微课管理 管理员-->
-                    {% if userprofile.type_id == 1 %}
-                    <li class=''>
-                        <a class='dropdown-collapse' href='#'>
-                            <i class='icon-edit'></i>
-                            <span>微课管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li class=''>
-                                <a href='/courses/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>管理微课</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/courseManage/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>添加微课</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <!--资源管理 管理员/教师-->
-                    <li class=''>
-                        <a class='dropdown-collapse' href='#'>
-                            <i class='icon-edit'></i>
-                            <span>资源管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li>
-                                <a class='dropdown-collapse' href='#'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>题目管理</span>
-                                    <i class='icon-angle-down angle-down'></i>
-                                </a>
-                                <ul class='nav nav-stacked'>
-                                    <li>
-                                        <a href='/allTasks/'>
-                                            <i class='icon-caret-right'></i>
-                                            <span>全部题目信息</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href='/myTasks/'>
-                                            <i class='icon-caret-right'></i>
-                                            <span>我的题目信息</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href='/myTaskManage/'>
-                                            <i class='icon-caret-right'></i>
-                                            <span>添加题目</span>
+                                            <span>历史成绩</span>
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <!--考试管理 管理员/教师-->
+                        </li>
+                    {% endif %}
+                    <!--学生[end]-->
+                    <!--管理员[start]-->
+                    {% if userprofile.type_id == 1 %}
+                        <li>
+                            <a class='dropdown-collapse' href='#'>
+                                <i class='icon-folder-open-alt'></i>
+                                <span>年级与班级管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li>
+                                    <a class='dropdown-collapse' href='#'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>年级信息</span>
+                                        <i class='icon-angle-down angle-down'></i>
+                                    </a>
+                                    <ul class='nav nav-stacked'>
+                                        <li>
+                                            <a href='/grades/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>年级管理</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/gradeManage/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>添加年级</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class='dropdown-collapse' href='#'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>班级信息</span>
+                                        <i class='icon-angle-down angle-down'></i>
+                                    </a>
+                                    <ul class='nav nav-stacked'>
+                                        <li>
+                                            <a href='/classes/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>班级管理</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/classManage/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>添加班级</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class='dropdown-collapse ' href='#'>
+                                <i class='icon-tint'></i>
+                                <span>教师管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/teachers/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>教师管理</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/teacherManage/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加教师</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--学生管理-->
+                        <li>
+                            <a class='dropdown-collapse ' href='#'>
+                                <i class='icon-tint'></i>
+                                <span>学生管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/myStudents/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>学生信息</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/myStudentManage/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加学生</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--课程管理-->
+                        <li class=''>
+                            <a class='dropdown-collapse' href='#'>
+                                <i class='icon-edit'></i>
+                                <span>课程管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/courses/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>管理课程</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/courseManage/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加课程</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--微课管理-->
+                        <li class=''>
+                            <a class='dropdown-collapse' href='#'>
+                                <i class='icon-edit'></i>
+                                <span>微课管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/courses/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>管理微课</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/courseManage/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加微课</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--资源管理-->
+                        <li class=''>
+                            <a class='dropdown-collapse' href='#'>
+                                <i class='icon-edit'></i>
+                                <span>资源管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li>
+                                    <a class='dropdown-collapse' href='#'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>题目管理</span>
+                                        <i class='icon-angle-down angle-down'></i>
+                                    </a>
+                                    <ul class='nav nav-stacked'>
+                                        <li>
+                                            <a href='/allTasks/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>全部题目信息</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/myTasks/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>我的题目信息</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/myTaskManage/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>添加题目</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--考试管理-->
+                        <li>
+                            <a class='dropdown-collapse ' href='#'>
+                                <i class='icon-tint'></i>
+                                <span>考试管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/testPapers/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>试卷管理</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/addTestPaper/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加试卷</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/myTests/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>我的发布</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='widgets.html'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>历史成绩</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <!--管理员[end]-->
+
+                    <!--教师[start]-->
+                    {% if userprofile.type_id == 2 %}
+                        <!--学生管理-->
+                        <li>
+                            <a class='dropdown-collapse ' href='#'>
+                                <i class='icon-tint'></i>
+                                <span>学生管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/myStudents/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>学生信息</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/myStudentManage/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加学生</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--资源管理-->
+                        <li class=''>
+                            <a class='dropdown-collapse' href='#'>
+                                <i class='icon-edit'></i>
+                                <span>资源管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li>
+                                    <a class='dropdown-collapse' href='#'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>题目管理</span>
+                                        <i class='icon-angle-down angle-down'></i>
+                                    </a>
+                                    <ul class='nav nav-stacked'>
+                                        <li>
+                                            <a href='/allTasks/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>全部题目信息</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/myTasks/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>我的题目信息</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href='/myTaskManage/'>
+                                                <i class='icon-caret-right'></i>
+                                                <span>添加题目</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--考试管理-->
+                        <li>
+                            <a class='dropdown-collapse ' href='#'>
+                                <i class='icon-tint'></i>
+                                <span>考试管理</span>
+                                <i class='icon-angle-down angle-down'></i>
+                            </a>
+                            <ul class='nav nav-stacked'>
+                                <li class=''>
+                                    <a href='/testPapers/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>试卷管理</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/addTestPaper/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>添加试卷</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='/myTests/'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>我的发布</span>
+                                    </a>
+                                </li>
+                                <li class=''>
+                                    <a href='widgets.html'>
+                                        <i class='icon-caret-right'></i>
+                                        <span>历史成绩</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <!--教师[end]-->
+                    <!--交流中心-->
                     <li>
-                        <a class='dropdown-collapse ' href='#'>
-                            <i class='icon-tint'></i>
-                            <span>考试管理</span>
-                            <i class='icon-angle-down angle-down'></i>
-                        </a>
-                        <ul class='nav nav-stacked'>
-                            <li class=''>
-                                <a href='/testPapers/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>试卷管理</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/addTestPaper/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>添加试卷</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='/myTests/'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>我的发布</span>
-                                </a>
-                            </li>
-                            <li class=''>
-                                <a href='widgets.html'>
-                                    <i class='icon-caret-right'></i>
-                                    <span>历史成绩</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class='dropdown-collapse ' href='#'>
+                        <a href='/QA/'>
                             <i class='icon-cogs'></i>
                             <span>师生问答</span>
                         </a>

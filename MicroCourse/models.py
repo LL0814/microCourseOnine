@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.utils import timezone
+import datetime
 from django.shortcuts import reverse
 # Create your models here.
 
@@ -97,3 +98,16 @@ class TestHistory(models.Model):
     owner = models.ForeignKey(User)
     Test = models.ForeignKey(Test)
     score = models.IntegerField(default=0)
+
+class Question(models.Model):
+    title = models.CharField(max_length=64, default='',blank=False)
+    content = models.TextField(default='')
+    status = models.IntegerField(default=0,blank=False)
+    time = models.DateTimeField(default=datetime.datetime.now())
+    user = models.ForeignKey(User)
+
+class Answer(models.Model):
+    content = models.TextField(default='')
+    user = models.ForeignKey(User)
+    time = models.DateTimeField(default=datetime.datetime.now())
+    question = models.ForeignKey(Question)

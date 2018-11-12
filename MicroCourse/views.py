@@ -432,7 +432,31 @@ def myTests(request):
 
 @auth_login
 def allQA(request):
-    return render(request, 'MicroCourse/qa.html')
+    user = Users.Users()
+    feedback = user._getAllQA(request)
+    return feedback
+
+def student_ask(request):
+    if request.method == 'GET':
+        username = request.session.get('username', None)
+        userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+        return render(request, 'MicroCourse/question.html', {'userprofile':userprofile})
+    if request.method == 'POST':
+        user = Users.Users()
+        feedback = user._createQuestion(request)
+        if feedback:
+            return HttpResponse('success')
+        else:
+            return HttpResponse('error')
+def QADetail(request, *args):
+    user = Users.Users()
+    if request.method == 'GET':
+        id = args[0]
+        feedback = user._getQAById(id, request)
+        return feedback
+    if request.method =='POST':
+        feedback = user._addAnswer(request)
+        return feedback
 
 #系统的图片上传，并回显给客户端
 @auth_login

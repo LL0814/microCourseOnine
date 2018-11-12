@@ -41,10 +41,12 @@ urlpatterns = [
     url(r'^taskDetail/([0-9]*)$', views.taskDetail),
     url(r'^allTasks/$', views.allTasks),
     url(r'^addTestPaper/([0-9]*)$', views.addTestPaper),
-    url(r'^testPaperDetail/([0-9]+)$', views.testPaperDetail),
+    url(r'^testPaperDetail/([0-9]*)$', views.testPaperDetail),
     url(r'^testPapers/$', views.testPapers),
     url(r'^myTests/$', views.myTests),
     url(r'^QA/$', views.allQA),
+    url(r'^QADetail/([0-9]+)$', views.QADetail),
+    url(r'^ask/$', views.student_ask),
     url(r'^upload_imgs/', views.img_upload_path),
     url(r'^', views.forbidden)
 ]

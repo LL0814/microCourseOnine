@@ -33,7 +33,7 @@
                             <div id='errorTips' class='alert alert-danger hidden'>
                                 <p><strong></strong></p>
                             </div>
-                            <button class="btn btn-warning" name="button" style="margin-bottom:5px" type="button">提问</button>
+                            <a class="btn btn-warning" style="margin-bottom:5px" href="/ask/">提问</a>
                         </div>
                     </div>
                 </div>
@@ -51,17 +51,23 @@
                                                 <th>
                                                     状态
                                                 </th>
+                                                <th>
+                                                    提问人
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for test in tests %}
+                                            {% for Q in QA %}
                                                 <tr>
-                                                    <td><a href="/testDetail/{{ test.id }}">{{ test.papername }}</a></td>
-                                                    <td>{{ test.takeExamUserCount }}</td>
-                                                    <td>{{ test.isActive }}</td>
+                                                    <td><a href="/QADetail/{{ Q.id }}">{{ Q.title }}</a></td>
                                                     <td>
-                                                        <button class="btn btn-success test-change-status" name="button" style="margin-bottom:5px" type="button">{{ test.action }}</button>
+                                                        {% if Q.status == 0 %}
+                                                            <button class="btn btn-danger test-change-status" name="button" style="margin-bottom:5px" type="button">待回答</button>
+                                                        {% else %}
+                                                            <button class="btn btn-success test-change-status" name="button" style="margin-bottom:5px" type="button">已回答</button>
+                                                        {% endif %}
                                                     </td>
+                                                    <td>{{ Q.user.userprofile.nickname }}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

@@ -4,6 +4,7 @@ from django.contrib import auth
 from MicroCourse import models
 from django.db.models import Q,F
 from django.db import transaction
+import re, datetime
 
 
 class Users:
@@ -135,8 +136,47 @@ class Users:
         for grade in grades:
             classes = SuperAdmin()._getClassesByGradeId(grade['id'])
             grade2class[grade['name']] = list(classes)
-        print(grade2class)
         return render(request, 'MicroCourse/user_profile.html', {'userprofile':userprofile, 'teachers':teachersinfo, 'grades':list(grades), 'classes':classes, 'grade2class':grade2class, 'gradeid2name':gradeid2name })
+
+    def _createQuestion(self, request):
+        title = request.POST.get('title')
+        content = request.POST.get('html')
+        username = request.session.get('username', None)
+        userid = User.objects.filter(username=username).first().id
+        try:
+            with transaction.atomic():
+                models.Question.objects.create(title=title, content=content, user_id=userid)
+            return True
+        except:
+            return False
+
+    def _getAllQA(self, request):
+        QA = models.Question.objects.filter().all()
+        username = request.session.get('username', None)
+        userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+        return render(request, 'MicroCourse/qa.html', {'userprofile': userprofile, 'QA':QA, })
+
+    def _getQAById(self, id, request):
+        username = request.session.get('username', None)
+        userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+        QA = models.Question.objects.filter(id=id)
+        AQ = models.Answer.objects.filter(question_id=id).order_by("-time")
+        answerCount = len(AQ)
+        return render(request, 'MicroCourse/QAitem.html', {'userprofile': userprofile, 'QA':QA.first(), 'AQ':AQ,
+                                                           'answerCount':answerCount,})
+
+    def _addAnswer(self, request):
+        answer = request.POST.get("answer")
+        url = request.POST.get("url", None)
+        Qid = url.split('/')[-1].replace('#commentedit', '')
+        username = request.session.get("username", None)
+        user = User.objects.get(username=username)
+        try:
+            models.Answer.objects.create(content=answer, question_id=Qid, user_id=user.id, time=datetime.datetime.now())
+            models.Question.objects.filter(id=Qid).update(status=1)
+            return HttpResponse("success")
+        except:
+            return HttpResponse("success")
 
 class student(Users):
     '''
@@ -149,6 +189,9 @@ class student(Users):
         pass
 
     def _test(self):
+        pass
+
+    def _askQ(self, request):
         pass
 
 class Teacher(Users):
@@ -166,14 +209,12 @@ class Teacher(Users):
         '''
         teacher_username = request.session.get('username', None)
         tid = User.objects.filter(username=teacher_username).first().id
-        print(tid)
         username = request.POST.get('username')
         passowrd = request.POST.get('password')
         id = int(request.POST.get('id'))
         try:
             with transaction.atomic():
                 studentCount = self._checkStudent(username)
-                print(id, studentCount)
                 if id == 0 and studentCount == 0:
                     return self._createStudent(username, passowrd, tid)
                 elif id > 0 and studentCount == 1:
@@ -306,7 +347,6 @@ class Teacher(Users):
         return models.TaskInfo.objects.filter().values().all()
 
     def _getTasksByNameAndType(self, name, type):
-        print(name, type)
         return models.TaskInfo.objects.filter(type=type, name__icontains=name).values()
 
     def _myTaskManage(self, request):
@@ -320,8 +360,6 @@ class Teacher(Users):
         try:
             with transaction.atomic():
                 taskCount = self._checkTask(name)
-
-                print(id, taskCount)
                 if id == 0 and taskCount == 0:
                     self._createTask(name, standardAnswer, alternativeAnswers, type, ownerId)
                     return HttpResponse('success')
@@ -454,7 +492,6 @@ class Teacher(Users):
 
     def _updateTestStatus(self, request):
         url = request.POST.get('url')
-        print(url)
         testid = url.split('/')[-1]
         test = models.Test.objects.get(id = testid)
         if test.isActive:
