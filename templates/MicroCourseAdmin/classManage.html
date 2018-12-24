@@ -40,10 +40,18 @@
                             <div class='control-group'>
                                 <label class='control-label' for='inputText'>年级</label> 
                                 <div class='controls'>
-                                        <select id="gradeId">
+                                        {% if id != 0 %}
+                                            <select id="gradeId" disabled="disabled">
+                                        {% else %}
+                                            <select id="gradeId">
+                                        {% endif %}
                                             <option value="0">-- 请选择 --</option>
                                             {% for grade in grades %}
-                                                <option value="{{ grade.id }}">{{ grade.name }}</option>
+                                                {% if class1.grade_id == grade.id %}
+                                                    <option value="{{ grade.id }}" selected>{{ grade.name }}</option>
+                                                {% else %}
+                                                    <option value="{{ grade.id }}">{{ grade.name }}</option>
+                                                {% endif %}
                                             {% endfor %}
                                         </select>
                                 </div>

@@ -47,6 +47,8 @@ urlpatterns = [
     url(r'^QA/$', views.allQA),
     url(r'^QADetail/([0-9]+)$', views.QADetail),
     url(r'^ask/$', views.student_ask),
+    url(r'^selectUnit/$', views.selectUnitCourse),
+    url(r'^UnitCourseManage/([0-9]+)$', views.UnitCourseManage),
     url(r'^upload_imgs/', views.img_upload_path),
     url(r'^', views.forbidden)
 ]

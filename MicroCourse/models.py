@@ -74,6 +74,17 @@ class CourseInfo(models.Model):
     description = models.TextField()
     grade = models.ForeignKey(GradeInfo)
 
+class UnitCourse(models.Model):
+    name = models.CharField(max_length=64, blank=False)
+    description = models.TextField()
+    course = models.ForeignKey(CourseInfo)
+
+class Files(models.Model):
+    name = models.CharField(max_length=64,  blank=False)
+    type = models.CharField(max_length=64, blank=False)
+    src = models.CharField(max_length=256, blank=False)
+    unitCourse = models.ForeignKey(UnitCourse)
+
 class TaskInfo(models.Model):
     name = models.TextField(blank=False)
     type = models.IntegerField(default=1)

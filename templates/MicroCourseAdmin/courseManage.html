@@ -40,12 +40,18 @@
                             <div class='control-group'>
                                 <label class='control-label' for='inputText'>年级</label> 
                                 <div class='controls'>
-                                        <select id="gradeId">
+                                        {% if id != 0 %}
+                                            <select id="gradeId" disabled="disabled">
+                                        {% else %}
+                                            <select id="gradeId">
+                                        {% endif %}
                                             <option value="0">-- 请选择 --</option>
                                             {% for grade in grades %}
                                                 {% if course.grade_id == grade.id %}
+                                                    <option value="{{ grade.id }}" selected>{{ grade.name }}</option>
+                                                {% else %}
+                                                    <option value="{{ grade.id }}">{{ grade.name }}</option>
                                                 {% endif %}
-                                                <option value="{{ grade.id }}">{{ grade.name }}</option>
                                             {% endfor %}
                                         </select>
                                 </div>
@@ -53,10 +59,18 @@
                             <div class='control-group'>
                                 <label class='control-label' for='inputText'>上下册</label> 
                                 <div class='controls'>
-                                        <select id="volume" >
-                                            <option value="0">-- 请选择 --</option>
-                                            <option value="1">上册</option>
-                                            <option value="2">下册</option>
+                                        {% if id != 0 %}
+                                            <select id="volume" disabled="disabled">
+                                        {% else %}
+                                            <select id="volume">
+                                        {% endif %}
+                                            {% if course.volume == "下册" %}
+                                                <option value="1">上册</option>
+                                                <option value="2" selected>下册</option>
+                                            {% else %}
+                                                <option value="1" selected>上册</option>
+                                                <option value="2">下册</option>
+                                            {% endif %}
                                         </select>
                                 </div>
                             </div>
@@ -83,6 +97,75 @@
                         </div>
                     </div>
                 </div>
+                {% if id != 0 %}
+                <div class='row-fluid'>
+                    <div class='span12 box'>
+                        <div class='box-content'>
+                            <div id='errorTips2' class='alert alert-danger hidden'>
+                                <p><strong></strong></p>
+                            </div>
+                            <a class="btn btn-primary" data-toggle='modal' id="btn-unit-add" href='#modal-unit-add' name="button" style="margin-bottom:5px" type="button">添加章节单元</a>
+                            <span class="alert-danger">{{error}}<span>
+                        </div>
+                            <div class='box-content' id="test-preview">
+                                <div class='modal hide fade' id='modal-unit-add' role='dialog' tabindex='-1'>
+                                    <div class='modal-header'>
+                                        <button class='close' data-dismiss='modal' type='button'>&times;</button>
+    
+                                    </div>
+                                    <div class='modal-body'>
+                                        <form action="/courseManage/{{id}}" method="POST">
+                                            <div class='control-group'>
+                                                <label class='control-label'>名称</label>
+                                                <div class='controls'>
+                                                    <input class='span12' id='test-course-name' name="unitName" placeholder='章节名称' type='text' required/>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="addUnit" value="addUnit" />
+                                            <input type="hidden" name="courseId" value="{{ id }}" />
+                                            <div class='control-group'>
+                                                <label class='control-label'>描述</label>
+                                                <div class='controls'>
+                                                    <textarea class='input-block-level' id='unitDes' name="unitDes" placeholder='章节描述...' rows='3'></textarea>
+                                                    <p class='help-block' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='modal-footer'>
+                                            <button type="submit" class='btn btn-primary' id="unit-add-save">添加</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <div class='box-content box-no-padding'>
+                            <div class='responsive-table'>
+                                <div class='scrollable-area'>
+                                    <table class='data-table-column-filter table table-bordered table-striped' style='margin-bottom:0;'>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    章节
+                                                </th>
+                                                <th>
+                                                    描述
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for unit in unitCourses %}
+                                                <tr>
+                                                    <td><a href="/courseUnit/{{ unit.id }}">{{ unit.name }}</a></td>
+                                                    <td>{{ unit.description }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endif%}
             </div>
         </div>
     </div>

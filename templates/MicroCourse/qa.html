@@ -62,9 +62,9 @@
                                                     <td><a href="/QADetail/{{ Q.id }}">{{ Q.title }}</a></td>
                                                     <td>
                                                         {% if Q.status == 0 %}
-                                                            <button class="btn btn-danger test-change-status" name="button" style="margin-bottom:5px" type="button">待回答</button>
+                                                            <button class="btn btn-danger" name="button" style="margin-bottom:5px" type="button">待回答</button>
                                                         {% else %}
-                                                            <button class="btn btn-success test-change-status" name="button" style="margin-bottom:5px" type="button">已回答</button>
+                                                            <button class="btn btn-success" name="button" style="margin-bottom:5px" type="button">已回答</button>
                                                         {% endif %}
                                                     </td>
                                                     <td>{{ Q.user.userprofile.nickname }}</td>

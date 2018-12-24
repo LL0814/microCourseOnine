@@ -8,10 +8,12 @@ function danger(tid, tips) {
         var gradeId = $('#gradeId').val();
         var gradeName = $('#gradeName').val();
         var gradeDes = $('#gradeDes').val();
+        var volume = $('#volume').val();
         var data = {
             'gradeId': gradeId,
             'gradeName': gradeName,
-            'gradeDes': gradeDes
+            'gradeDes': gradeDes,
+            'volume': volume,
         }
         if (gradeName == '' || gradeName == undefined) {
             $('#errorTips').removeClass('hidden').find('strong').text('年级名不能为空');

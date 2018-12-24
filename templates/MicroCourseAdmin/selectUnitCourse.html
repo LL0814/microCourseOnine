@@ -1,0 +1,133 @@
+<title>文件上传 - 选择课程章节</title>
+{%extends 'MicroCourseAdmin/adminNav.html' %}
+{% block content %}
+<section id='content'>
+    <div class='container-fluid'>
+        <div class='row-fluid' id='content-wrapper'>
+            <div class='span12'>
+                <div class='row-fluid'>
+                    <div class='span12'>
+                        <div class='page-header'>
+                            <h1 class='pull-left'>
+                                <i class='icon-ok'></i>
+                                <span>文件上传 - 选择课程章节</span>
+                            </h1>
+                            <div class='pull-right'>
+                                <ul class='breadcrumb'>
+                                    <li>
+                                        <a><i class='icon-bar-chart'></i>
+                                        </a>
+                                    </li>
+                                    <li class='separator'>
+                                        <i class='icon-angle-right'></i>
+                                    </li>
+                                    <li>
+                                        资源管理
+                                    </li>
+                                    <li class='separator'>
+                                        <i class='icon-angle-right'></i>
+                                    </li>
+                                    <li class='active'>文件上传 - 选择课程章节</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span12 box'>
+                        <div class='box-content'>
+                            <div id='errorTips' class='alert alert-danger hidden'>
+                                <p><strong></strong></p>
+                            </div>
+                            <fieldset id="custom_data">
+                                <div class='span4'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <select class="span12" id="select-grade">
+                                                <option value="0">-- 请选择年级 --</option>
+                                                {% for grade in grades %}
+                                                    <option value="{{ grade.id }}">{{ grade.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='span4'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                            <select class="span12" id="select-course" disabled="disabled">
+                                                <option value="0">-- 请选择课程类别 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='span4'>
+                                    <div class='control-group'>
+                                        <div class='controls'>
+                                                <button id="getUnitCourses" style="float:right;" type="button" class="btn btn-success">查询课程章节</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class='box-header blue-background unit-items-container hidden'>
+                            <div class='unit-items-title'></div>
+                        </div>
+                        <div class='unit-items-container box-content box-no-padding hidden'>
+                            <div class='responsive-table'>
+                                <div class='scrollable-area'>
+                                    <table class='table' style='margin-bottom:0;'>
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    章节
+                                                </th>
+                                                <th>
+                                                    描述
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="unit-items">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="/static/assets/javascripts/jquery/jquery.min.js"></script>
+<script src="/static/assets/javascripts/jquery/jquery.cxselect.min.js"></script>
+<script src='/static/assets/javascripts/jquery/jquery.min.js' type='text/javascript'></script>
+<script src='/static/assets/javascripts/jquery/jquery.cookie.js' type='text/javascript'></script>
+<script src='/static/assets/javascripts/profile.js' type='text/javascript'></script>
+<script src='/static/assets/javascripts/files.js' type='text/javascript'></script>
+<script>
+    $('#select-grade').on('change', function() {
+        let grade2course = {{ grade2course | safe }};
+        let gradeid2name = {{ gradeid2name | safe }};
+        let gradeid = $(this).val();
+        let gradename = gradeid2name[gradeid]
+        let course = grade2course[gradename];
+
+        let defaultOption = "<option value='0'>-- 请选择课程类别 --</option>";
+        let options = defaultOption;
+        if(course) {
+            course.map((cls) => {
+                options += "<option value='" + cls.id + "'>" + cls.name + "</option>";
+            })
+        }
+        $('#select-course').empty();
+        if(options == defaultOption){
+            $('#select-course').attr('disabled', 'disabled');
+        }
+        else{
+            $('#select-course').attr('disabled', false);
+        }
+        $('#select-course').append(options);
+    });
+</script>
+{% endblock %}

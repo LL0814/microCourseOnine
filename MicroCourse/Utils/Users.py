@@ -138,6 +138,35 @@ class Users:
             grade2class[grade['name']] = list(classes)
         return render(request, 'MicroCourse/user_profile.html', {'userprofile':userprofile, 'teachers':teachersinfo, 'grades':list(grades), 'classes':classes, 'grade2class':grade2class, 'gradeid2name':gradeid2name })
 
+    def _resetPassword(self, request):
+        username = request.session.get('username', None)
+        password = request.POST.get('password')
+        user = User.objects.get(username=username)
+        user.set_password(password)  # 设置新的密码
+        try:
+            with transaction.atomic():
+                user.save()
+                return HttpResponse('success')
+        except:
+            return HttpResponse('error')
+
+    def _editProfile(self, request):
+        username = request.session.get('username', None)
+        nickname = request.POST.get('nickname')
+        teacherId = request.POST.get('teacherId')
+        gradeId = request.POST.get('gradeId')
+        classId = request.POST.get('classId')
+        print(username, nickname, teacherId, gradeId, classId)
+        try:
+            with transaction.atomic():
+                models.UserProfile.objects.filter(user__username=username).update(nickname=nickname,
+                                                                                  teacher=teacherId,
+                                                                                  grade=gradeId,
+                                                                                  class1=classId)
+                return HttpResponse('success')
+        except:
+            return HttpResponse('error')
+
     def _createQuestion(self, request):
         title = request.POST.get('title')
         content = request.POST.get('html')
@@ -503,6 +532,26 @@ class Teacher(Users):
             test.save()
             return HttpResponse('start')
 
+    def _getUnitById(self, request, id):
+        units = models.UnitCourse.objects.filter(id=id)
+        if len(units) == 0:
+            return redirect('/404/')
+        else:
+            unit = units.first()
+            files = self._getFilesByUnitId(id)
+            username = request.session.get('username', None)
+            print(unit)
+            print(files)
+            userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+            return render(request, 'MicroCourseAdmin/unitCourseManage.html', {'unit':unit, 'files':files, 'userprofile':userprofile})
+
+    def _getFilesByUnitId(self, id):
+        files = models.Files.objects.filter(unitCourse=id)
+        return files
+
+    def _fileUpload(self, request, unitid):
+        pass
+
 class SuperAdmin(Teacher):
     '''
     超级管理员类
@@ -621,26 +670,27 @@ class SuperAdmin(Teacher):
         if not self._checkGradeById(gradeId):
             try:
                 '''如果id==0 则创建新的班级信息 否则更新该班级信息'''
-                classCount = self._checkClass(name)
+                classCount = self._checkClass(name, gradeId)
                 if id == 0 and classCount == 0:
                     self._createClass(name, des, gradeId)
-                elif id >0 and classCount <= 1:
-                    self._updateClass(id, name, des, gradeId)
+                elif id >0 and classCount == 1:
+                    self._updateClass(id, name, des)
                 else:
-                    return HttpResponse('该班级已存在')
+                    return HttpResponse('该年级已存在该班级')
                 return HttpResponse('success')
             except:
                 return HttpResponse('错误：请稍后再试')
         else:
             return HttpResponse('该年级不存在')
 
-    def _checkClass(self, name):
+    def _checkClass(self, name, gradeId):
         '''
         使用班级名称检查该班级是否已经存在
         :param name:
         :return:
         '''
-        return models.ClassInfo.objects.filter(name=name).count()
+        print(name, gradeId)
+        return models.ClassInfo.objects.filter(name=name, grade_id=gradeId).count()
 
     def _selectClass(self, id):
         '''
@@ -664,6 +714,17 @@ class SuperAdmin(Teacher):
         :return:
         '''
         models.ClassInfo.objects.filter(id=id).update(name=name, description=des, grade=gradeId)
+
+    @transaction.atomic
+    def _updateClass(self, id, name, des):
+        '''
+        更新该id的班级信息
+        :param id:
+        :param name:
+        :param des:
+        :return:
+        '''
+        models.ClassInfo.objects.filter(id=id).update(name=name, description=des)
 
     @transaction.atomic
     def _createClass(self, name, des, gradeId):
@@ -706,16 +767,16 @@ class SuperAdmin(Teacher):
         name = request.POST.get('courseName')
         des = request.POST.get('courseDes')
         id = int(request.POST.get('courseId'))
-        volume = '上册' if request.POST.get('volume') == 1 else '下册'
+        volume = '上册' if request.POST.get('volume') == '1' else '下册'
         gradeId =int(request.POST.get('gradeId'))
         if not self._checkGradeById(gradeId):
             try:
-                courseCount = self._checkCourse(name)
+                courseCount = self._checkCourse(name, gradeId, volume)
                 if id == 0 and courseCount == 0:
                     self._createCourse(name, des, gradeId ,volume)
                     return HttpResponse('success')
-                elif id > 0 and courseCount <= 1:
-                    self._updateCourse(id, name, des, volume)
+                elif id > 0 and courseCount == 1:
+                    self._updateCourse(id, name, des)
                     return HttpResponse('success')
                 else:
                     return HttpResponse('该课程名称已存在')
@@ -725,13 +786,13 @@ class SuperAdmin(Teacher):
         else:
             return HttpResponse('该年级不存在')
 
-    def _checkCourse(self, name):
+    def _checkCourse(self, name, gradeId, volume):
         '''
         使用名称检查该课程是否存在
         :param name:
         :return:
         '''
-        return models.CourseInfo.objects.filter(name=name).count()
+        return models.CourseInfo.objects.filter(name=name, grade_id=gradeId, volume=volume).count()
 
     def _selectCourse(self, id):
         '''
@@ -746,7 +807,7 @@ class SuperAdmin(Teacher):
             return 'notExist'
 
     @transaction.atomic
-    def _updateCourse(self, id, name, des, volume):
+    def _updateCourse(self, id, name, des):
         '''
         更新该id的课程信息
         :param id:
@@ -754,7 +815,7 @@ class SuperAdmin(Teacher):
         :param des:
         :return:
         '''
-        models.CourseInfo.objects.filter(id=id).update(name=name, description=des, volume=volume)
+        models.CourseInfo.objects.filter(id=id).update(name=name, description=des)
 
     @transaction.atomic
     def _createCourse(self, name, des, gradeId, volume):
@@ -786,6 +847,24 @@ class SuperAdmin(Teacher):
         :return:
         '''
         return models.CourseInfo.objects.values().all()
+
+    def _getUnitCoursesByCourseId(self, id):
+        unitCourses = models.UnitCourse.objects.filter(course_id=id).values()
+        return unitCourses
+
+    def _createUnitCourse(self, name, des, courseId):
+        if self._checkUnitCourseByNameAndCourseId(name, courseId):
+            try:
+                models.UnitCourse.objects.create(name=name, description=des, course_id=courseId)
+                return 'success'
+            except:
+                return '创建新章节失败, 请稍后再试'
+        else:
+            return '该章节名称在该课程中已存在'
+
+    def _checkUnitCourseByNameAndCourseId(self, name , courseId):
+        count = models.UnitCourse.objects.filter(name=name, course_id=courseId).count()
+        return False if count >0 else True
 
     def _teacherManage(self, request):
         '''
@@ -907,4 +986,47 @@ class SuperAdmin(Teacher):
     def _getClassesByGradeId(self, id):
         return models.ClassInfo.objects.filter(grade_id=id).values().all()
 
+    def _getCoursesByGradeId(self, id):
+        return models.CourseInfo.objects.filter(grade_id=id).values().all()
 
+    def _getGrade2Class2Course(self):
+        grades = self._getAllGrades()
+        classes = self._getAllClasses()
+        courses = self._getAllCourses()
+        print(grades)
+        print(classes)
+        print(courses)
+        print('------------------------------')
+        dataCustom = []
+
+        for grade in grades:
+            gradeid = 'grade-' + str(grade['id'])
+            gradedata = {'v': gradeid, 'n': grade['name'], 's': []}
+            for class1 in classes:
+                classid = 'class-' + str(class1['id'])
+                classdata = {'v': classid, 'n': class1['name'], 's': []}
+                for course in courses:
+                    courseid = 'course-' + str(course['id'])
+                    coursedata = {'v': courseid, 'n': course['name']}
+                    classdata['s'].append(coursedata)
+                if class1['grade_id'] == grade['id']:
+                    gradedata['s'].append(classdata)
+            dataCustom.append(gradedata)
+        print(dataCustom)
+
+    def _getGrade2Class_Course(self, request):
+        username = request.session.get('username', None)
+        userprofile = models.UserProfile.objects.filter(user__username=username).first()
+        grades = self._getAllGrades()
+        gradeid2name = {}
+        grade2course = {}
+        for grade in grades:
+            gradeid2name[grade['id']] = grade['name']
+        for grade in grades:
+            courses = self._getCoursesByGradeId(grade['id'])
+            for course in courses:
+                course['name'] = course['name'] + '-' + course['volume']
+            grade2course[grade['name']] = list(courses)
+        return render(request, 'MicroCourseAdmin/selectUnitCourse.html', {'userprofile':userprofile, 'grades':list(grades),
+                                                                 'gradeid2name':gradeid2name,
+                                                                 'grade2course':grade2course, })

@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.http import JsonResponse
 from django.contrib import auth
 from MicroCourse import models
 from MicroCourse.Utils import Users
@@ -110,8 +111,18 @@ def forbidden(request):
     return render(request, 'MicroCourse/err404.html')
 
 def profile(request):
-    feedback = Users.Users()._myself(request)
-    return feedback
+    user = Users.Users()
+    if request.method == 'GET':
+        feedback = user._myself(request)
+        return feedback
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'resetpassword':
+            feedback = user._resetPassword(request)
+            return feedback
+        else:
+            feedback = user._editProfile(request)
+            return feedback
 
 def video(request):
     return render(request, 'MicroCourse/ui_elements.html')
@@ -225,26 +236,56 @@ def courseManage(request, *args):
     :param args:
     :return:
     '''
+    admin = Users.SuperAdmin()
+    username = request.session.get('username', None)
+    userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+    grades = admin._getAllGrades()
     if request.method == 'GET':
-        username = request.session.get('username', None)
-        userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
         course = {
             'name': '',
             'description': '',
         }
         id = args[0] if args[0] != '' else 0
-        admin = Users.SuperAdmin()
-        grades = admin._getAllGrades()
         if id == 0:
             return render(request, 'MicroCourseAdmin/courseManage.html', {'id': id, 'course': course, 'grades':grades, 'userprofile':userprofile})
         course = admin._selectCourse(id)
+        unitCourses = admin._getUnitCoursesByCourseId(id)
         if course != 'notExist':
-            return render(request, 'MicroCourseAdmin/courseManage.html' ,{'id':id, 'course':course, 'grades':grades, 'userprofile':userprofile})
+            return render(request, 'MicroCourseAdmin/courseManage.html' ,{'id':id, 'course':course, 'grades':grades, 'unitCourses':unitCourses, 'userprofile':userprofile})
         else:
             return redirect('/classes/')
     if request.method == 'POST':
-        admin = Users.SuperAdmin()
-        return admin._courseManage(request) #创建或者更新课程信息
+        if request.POST.get('addUnit') == 'addUnit':
+            name = request.POST.get('unitName')
+            des = request.POST.get('unitDes')
+            id = request.POST.get('courseId')
+            course = admin._selectCourse(id)
+            unitCourses = admin._getUnitCoursesByCourseId(id)
+            feedback = admin._createUnitCourse(name, des, id)
+            error = ''
+            if feedback != 'success':
+                error = feedback
+            return render(request, 'MicroCourseAdmin/courseManage.html',
+                          {'id': id, 'course': course, 'grades': grades, 'unitCourses': unitCourses,
+                           'userprofile': userprofile, 'error': error})
+        else:
+            admin = Users.SuperAdmin()
+            return admin._courseManage(request) #创建或者更新课程信息
+
+@auth_login
+@auth_admin_teacher
+def UnitCourseManage(request, *args):
+    teacher = Users.Teacher()
+    if request.method == 'GET':
+        id = int(args[0]) if args[0] != '' else 0
+        print(id)
+        print(type(id))
+        if id > 0:
+            feedback = teacher._getUnitById(request, id)
+            return feedback
+        else:
+            return redirect('/404/')
+
 
 @auth_login
 @auth_admin
@@ -457,6 +498,20 @@ def QADetail(request, *args):
     if request.method =='POST':
         feedback = user._addAnswer(request)
         return feedback
+
+def selectUnitCourse(request):
+    admin = Users.SuperAdmin()
+    username = request.session.get('username', None)
+    userprofile = models.UserProfile.objects.filter(user__username=username).values().first()
+    if request.method == 'GET':
+        user = Users.SuperAdmin()
+        feedback = user._getGrade2Class_Course(request)
+        return feedback
+    elif request.method == 'POST':
+        if request.POST.get('action') == 'getUnits':
+            courseId = request.POST.get('courseId')
+            unitCourses = admin._getUnitCoursesByCourseId(courseId)
+            return HttpResponse(json.dumps(list(unitCourses)), content_type="application/json")
 
 #系统的图片上传，并回显给客户端
 @auth_login
